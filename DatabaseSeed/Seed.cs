@@ -1,0 +1,42 @@
+﻿using MeetingsAPI_V2.Data;
+using MeetingsAPI_V2.Entities;
+using Microsoft.EntityFrameworkCore;
+
+namespace MeetingsAPI_V2.DatabaseSeed
+{
+    public static class Seed
+    {
+        public static void PrepSeed(IApplicationBuilder app)
+        {
+            using(var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                SeedData(serviceScope.ServiceProvider.GetService<DataContext>());
+            }
+        }
+
+        public static void SeedData(DataContext context)
+        {
+
+            context.Database.Migrate();
+
+            if (!context.Meetings.Any())
+            {
+                context.Meetings.AddRange(
+                    new Meeting()
+                    {
+                        Name = "Calculus Exam"
+                    },
+                    new Meeting()
+                    {
+                        Name = "Algebra First Meeting"
+                    },
+                    new Meeting()
+                    {
+                        Name = "Web programming Meeting"
+                    }
+                );
+                context.SaveChanges();
+            }
+        }
+    }
+}
