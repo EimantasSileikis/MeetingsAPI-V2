@@ -4,6 +4,7 @@ using MeetingsAPI_V2.Models;
 using MeetingsAPI_V2.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace MeetingsAPI_V2.Controllers
 {
@@ -13,6 +14,8 @@ namespace MeetingsAPI_V2.Controllers
     {
         private readonly IMeetingRepository _meetingRepository;
         private readonly IMapper _mapper;
+        private readonly string _url = "http://contacts:5000/contacts/";
+        static readonly HttpClient client = new HttpClient();
 
         public MeetingsController(IMeetingRepository meetingRepository,
             IMapper mapper)
@@ -84,6 +87,38 @@ namespace MeetingsAPI_V2.Controllers
             await _meetingRepository.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpPut("/{id}/Users/{userId}")]
+        public async Task<ActionResult<User>> AddUserToMeeting(int id, int userId)
+        {
+            var meeting = await _meetingRepository.GetMeetingAsync(id);
+
+            if (meeting == null)
+            {
+                return NotFound();
+            }
+            User user = null;
+
+            try
+            {
+                string responseBody = await client.GetStringAsync(_url + userId);
+                user = JsonConvert.DeserializeObject<User>(responseBody);
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("Message :{0} ", e.Message);
+            }
+            
+            if(user == null)
+            {
+                return NotFound();
+            }
+
+            meeting.Users.Add(user);
+            await _meetingRepository.SaveChangesAsync();
+
+            return Ok(user);
         }
     }
 }

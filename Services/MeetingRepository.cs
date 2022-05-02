@@ -23,8 +23,6 @@ namespace MeetingsAPI_V2.Services
             return await _context.Meetings.Where(m => m.Id == meetingId).FirstOrDefaultAsync();
         }
 
-
-
         public void AddMeetingAsync(Meeting meeting)
         {
             _context.Add(meeting);
@@ -48,5 +46,7 @@ namespace MeetingsAPI_V2.Services
         {
             return (await _context.SaveChangesAsync() >= 0);
         }
+
+        
     }
 }
