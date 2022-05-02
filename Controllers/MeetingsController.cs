@@ -5,6 +5,8 @@ using MeetingsAPI_V2.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Linq;
+using System.Text.Json;
 
 namespace MeetingsAPI_V2.Controllers
 {
@@ -14,7 +16,8 @@ namespace MeetingsAPI_V2.Controllers
     {
         private readonly IMeetingRepository _meetingRepository;
         private readonly IMapper _mapper;
-        private readonly string _url = "http://contacts:5000/contacts/";
+        //private readonly string _url = "http://contacts:5000/contacts/";
+        private readonly string _url = "http://localhost/contacts/";
         static readonly HttpClient client = new HttpClient();
 
         public MeetingsController(IMeetingRepository meetingRepository,
@@ -25,11 +28,24 @@ namespace MeetingsAPI_V2.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Meeting>>> GetMeetings()
+        public async Task<ActionResult<IEnumerable<MeetingGetDto>>> GetMeetings()
         {
             var meetingEntities = await _meetingRepository.GetMeetingsAsync();
+            ICollection<MeetingGetDto> meetingList = new List<MeetingGetDto>();
 
-            return Ok(meetingEntities);
+            foreach (var meeting in meetingEntities)
+            {
+                var users = JsonConvert.DeserializeObject<User[]>("[" + meeting.Users + "]");
+                MeetingGetDto meetingDto = new MeetingGetDto()
+                {
+                    Id = meeting.Id,
+                    Name = meeting.Name,
+                    Users = users
+                };
+                meetingList.Add(meetingDto);
+            }
+
+            return Ok(meetingList);
         }
 
         [HttpGet("{id}")]
@@ -42,7 +58,16 @@ namespace MeetingsAPI_V2.Controllers
                 return NotFound();
             }
 
-            return Ok(meeting);
+            var users = JsonConvert.DeserializeObject<User[]>("[" + meeting.Users + "]");
+
+            MeetingGetDto meetingDto = new MeetingGetDto()
+            {
+                Id = meeting.Id,
+                Name = meeting.Name,
+                Users = users
+            }; 
+
+            return Ok(meetingDto);
         }
 
         [HttpPost]
@@ -89,7 +114,7 @@ namespace MeetingsAPI_V2.Controllers
             return NoContent();
         }
 
-        [HttpPut("/{id}/Users/{userId}")]
+        [HttpPut("{id}/Users/{userId}")]
         public async Task<ActionResult<User>> AddUserToMeeting(int id, int userId)
         {
             var meeting = await _meetingRepository.GetMeetingAsync(id);
@@ -114,11 +139,39 @@ namespace MeetingsAPI_V2.Controllers
             {
                 return NotFound();
             }
-
-            meeting.Users.Add(user);
+            if(meeting.Users == null || meeting.Users == string.Empty)
+            {
+                meeting.Users += (JsonConvert.SerializeObject(user));
+            }
+            else
+            {
+                meeting.Users += ("," + JsonConvert.SerializeObject(user));
+            }
             await _meetingRepository.SaveChangesAsync();
 
             return Ok(user);
+        }
+
+        [HttpDelete("{id}/Users/{userId}")]
+        public async Task<ActionResult> RemoveUserFromMeeting(int id, int userId)
+        {
+            var meeting = await _meetingRepository.GetMeetingAsync(id);
+
+            if (meeting == null)
+            {
+                return NotFound();
+            }
+
+            var users = JsonConvert.DeserializeObject<User[]>("[" + meeting.Users + "]");
+            if(users != null)
+            {
+                users = users.Where(user => user.Id != userId).ToArray();
+                meeting.Users = JsonConvert.SerializeObject(users);
+                meeting.Users = meeting.Users.Substring(1, meeting.Users.Length - 2);
+                await _meetingRepository.SaveChangesAsync();
+            }
+
+            return NoContent();
         }
     }
 }

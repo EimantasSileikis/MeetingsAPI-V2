@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using MeetingsAPI_V2.Entities;
+using MeetingsAPI_V2.Models;
 
 namespace MeetingsAPI_V2.Profiles
 {
@@ -6,8 +8,10 @@ namespace MeetingsAPI_V2.Profiles
     {
         public MeetingProfile()
         {
-            CreateMap<Entities.Meeting, Models.MeetingDto>();
-            CreateMap<Models.MeetingDto, Entities.Meeting>();
+            CreateMap<Meeting, MeetingDto>();
+            CreateMap<MeetingDto, Meeting>();
+            CreateMap<Meeting, MeetingGetDto>();
+            CreateMap<MeetingGetDto, Meeting>();
         }
     }
 }
