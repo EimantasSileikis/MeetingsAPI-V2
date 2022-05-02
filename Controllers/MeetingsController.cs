@@ -16,8 +16,8 @@ namespace MeetingsAPI_V2.Controllers
     {
         private readonly IMeetingRepository _meetingRepository;
         private readonly IMapper _mapper;
-        //private readonly string _url = "http://contacts:5000/contacts/";
-        private readonly string _url = "http://localhost/contacts/";
+
+        private readonly string _url = "http://contacts:5000/contacts/";
         static readonly HttpClient client = new HttpClient();
 
         public MeetingsController(IMeetingRepository meetingRepository,

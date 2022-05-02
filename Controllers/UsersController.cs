@@ -9,9 +9,7 @@ namespace MeetingsAPI_V2.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        //private readonly string _url = "http://contacts:5000/contacts/";
-        private readonly string _url = "http://localhost/contacts/";
-
+        private readonly string _url = "http://contacts:5000/contacts/";
         static readonly HttpClient client = new HttpClient();
 
         [HttpGet]
