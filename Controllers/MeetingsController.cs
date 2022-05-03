@@ -165,10 +165,20 @@ namespace MeetingsAPI_V2.Controllers
             var users = JsonConvert.DeserializeObject<User[]>("[" + meeting.Users + "]");
             if(users != null)
             {
+                var userLength = users.Length;
                 users = users.Where(user => user.Id != userId).ToArray();
+
+                if (users.Length == userLength)
+                {
+                    return NotFound();
+                }
                 meeting.Users = JsonConvert.SerializeObject(users);
                 meeting.Users = meeting.Users.Substring(1, meeting.Users.Length - 2);
                 await _meetingRepository.SaveChangesAsync();
+            }
+            else
+            {
+                return NotFound();
             }
 
             return NoContent();

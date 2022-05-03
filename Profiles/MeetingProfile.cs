@@ -12,6 +12,7 @@ namespace MeetingsAPI_V2.Profiles
             CreateMap<MeetingDto, Meeting>();
             CreateMap<Meeting, MeetingGetDto>();
             CreateMap<MeetingGetDto, Meeting>();
+            CreateMap<UserDto, User>();
         }
     }
 }
