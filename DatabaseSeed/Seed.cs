@@ -24,11 +24,13 @@ namespace MeetingsAPI_V2.DatabaseSeed
                 context.Meetings.AddRange(
                     new Meeting()
                     {
-                        Name = "Calculus Exam"
+                        Name = "Calculus Exam",
+                        Users = "{\"Id\":74638,\"Surname\":\"Dirk\",\"Name\":\"Mike\",\"Number\":\" + 37064787734\",\"Email\":\"mikedirk@mail.com\"},{\"Id\":11234,\"Surname\":\"Mer\",\"Name\":\"Eva\",\"Number\":\" + 37064787737\",\"Email\":\"EvaMer@mail.com\"}"
                     },
                     new Meeting()
                     {
-                        Name = "Algebra First Meeting"
+                        Name = "Algebra First Meeting",
+                        Users = "{\"Id\":87014,\"Surname\":\"Davis\",\"Name\":\"Luke\",\"Number\":\" + 37064787735\",\"Email\":\"davisluke@mail.com\"}"
                     },
                     new Meeting()
                     {
