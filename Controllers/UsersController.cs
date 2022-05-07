@@ -12,7 +12,9 @@ namespace MeetingsAPI_V2.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly string _url = "http://contacts:5000/contacts/";
+        //private readonly string _url = "http://contacts:5000/contacts/";
+        private readonly string _url = "http://localhost/contacts/";
+
         static readonly HttpClient client = new HttpClient();
 
         [HttpGet]
@@ -61,6 +63,7 @@ namespace MeetingsAPI_V2.Controllers
             {
                 Console.WriteLine(e.Message);
             }
+
             if (response.IsSuccessStatusCode)
             {
                 return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);

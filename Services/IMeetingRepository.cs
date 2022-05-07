@@ -10,5 +10,6 @@ namespace MeetingsAPI_V2.Services
         Task<bool> MeetingExistAsync(int meetingId);
         void AddMeetingAsync(Meeting meeting);
         Task DeleteMeetingAsync(int meetingId);
+        Task<User?> FindUserAsync(int userId);
     }
 }

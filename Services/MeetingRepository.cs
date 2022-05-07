@@ -1,12 +1,17 @@
 ﻿using MeetingsAPI_V2.Data;
 using MeetingsAPI_V2.Entities;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace MeetingsAPI_V2.Services
 {
     public class MeetingRepository: IMeetingRepository
     {
         private readonly DataContext _context;
+        //private readonly string _url = "http://contacts:5000/contacts/";
+        private readonly string _url = "http://localhost/contacts/";
+        static readonly HttpClient client = new HttpClient();
+
 
         public MeetingRepository(DataContext context)
         {
@@ -47,6 +52,21 @@ namespace MeetingsAPI_V2.Services
             return (await _context.SaveChangesAsync() >= 0);
         }
 
-        
+        public async Task<User?> FindUserAsync(int userId)
+        {
+            User? user = null;
+            try
+            {
+                string responseBody = await client.GetStringAsync(_url + userId);
+                user = JsonConvert.DeserializeObject<User>(responseBody);
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("Message :{0} ", e.Message);
+                return null;
+            }
+
+            return user;
+        }
     }
 }

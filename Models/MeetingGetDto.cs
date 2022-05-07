@@ -8,6 +8,6 @@ namespace MeetingsAPI_V2.Models
 
         public string Name { get; set; } = string.Empty;
 
-        public User[]? Users { get; set; }
+        public ICollection<User> Users { get; set; } = new List<User>();
     }
 }

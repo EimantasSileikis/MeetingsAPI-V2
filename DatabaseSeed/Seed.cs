@@ -25,12 +25,12 @@ namespace MeetingsAPI_V2.DatabaseSeed
                     new Meeting()
                     {
                         Name = "Calculus Exam",
-                        Users = "{\"Id\":74638,\"Surname\":\"Dirk\",\"Name\":\"Mike\",\"Number\":\" + 37064787734\",\"Email\":\"mikedirk@mail.com\"},{\"Id\":11234,\"Surname\":\"Mer\",\"Name\":\"Eva\",\"Number\":\" + 37064787737\",\"Email\":\"EvaMer@mail.com\"}"
+                        Users = "12345"
                     },
                     new Meeting()
                     {
                         Name = "Algebra First Meeting",
-                        Users = "{\"Id\":87014,\"Surname\":\"Davis\",\"Name\":\"Luke\",\"Number\":\" + 37064787735\",\"Email\":\"davisluke@mail.com\"}"
+                        Users = "12345"
                     },
                     new Meeting()
                     {

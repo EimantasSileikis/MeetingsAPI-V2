@@ -3,10 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MeetingsAPI_V2.Models
 {
-    public class MeetingDto
+    public class MeetingWithUserObjDto
     {
         [Required]
-        public string Name { get; set; } = string.Empty;
         public User[]? Users { get; set; }
     }
 }

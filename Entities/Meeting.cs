@@ -11,6 +11,6 @@ namespace MeetingsAPI_V2.Entities
         [Required]
         public string Name { get; set; } = string.Empty;
 
-        public string? Users { get; set; }
+        public string Users { get; set; } = string.Empty;
     }
 }
