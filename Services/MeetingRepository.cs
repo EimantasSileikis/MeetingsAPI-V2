@@ -8,8 +8,7 @@ namespace MeetingsAPI_V2.Services
     public class MeetingRepository: IMeetingRepository
     {
         private readonly DataContext _context;
-        //private readonly string _url = "http://contacts:5000/contacts/";
-        private readonly string _url = "http://localhost/contacts/";
+        private readonly string _url = "http://contacts:5000/contacts/";
         static readonly HttpClient client = new HttpClient();
 
 
